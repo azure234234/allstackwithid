@@ -1,0 +1,6 @@
+---
+  - include: searchplay1.yml
+
+  - include: searchplay2.yml
+
+  - include: searchplay3.yml

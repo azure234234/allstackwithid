@@ -1,0 +1,74 @@
+---
+
+- name: Create Azure VM
+  hosts: localhost
+  connection: local
+  tasks:
+  - name: Create virtual network
+    azure_rm_virtualnetwork:
+      ad_user: ppandey6@evicore.com
+      password: Friday27
+      resource_group: myResourceGroup
+      name: myVnet
+      address_prefixes: "10.0.0.0/16"
+  - name: Add subnet
+    azure_rm_subnet:
+      resource_group: myResourceGroup
+      name: mySubnet
+      address_prefix: "10.0.1.0/24"
+      virtual_network: myVnet
+  - name: Create public IP address
+    azure_rm_publicipaddress:
+      resource_group: myResourceGroup
+      allocation_method: Static
+      name: testnode1publicip
+  - name: Create Network Security Group that allows SSH
+    azure_rm_securitygroup:
+      resource_group: myResourceGroup
+      name: myNetworkSecurityGroup
+      rules:
+        - name: SSH
+          protocol: Tcp
+          destination_port_range: 22
+          access: Allow
+          priority: 1001
+          direction: Inbound
+#  - name: Create virtual network inteface card
+#    azure_rm_networkinterface:
+#      resource_group: myResourceGroup
+#      name: myNIC2
+#      virtual_network: myVnet
+#      subnet: mySubnet
+#      public_ip_name: myPublicIP2
+#      security_group: myNetworkSecurityGroup
+  - name: Create VM
+    azure_rm_virtualmachine:
+      resource_group: myResourceGroup
+      name: testnode1
+      vm_size: Standard_DS1_v2
+      admin_username: pawan
+      ssh_password_enabled: false
+      ssh_public_keys: 
+        - path: /home/pawan/.ssh/authorized_keys
+          key_data: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+        - path: /home/pawan/.ssh/authorized_keys
+          key_data: "{{ lookup('file', '/root/accesskeys/id_rsa.pub') }}"
+#      network_interfaces: myNIC2
+      image:
+        offer: CentOS
+        publisher: OpenLogic
+        sku: '7.3'
+        version: latest
+#    register: azure
+  - name: Add new instance to host group
+    shell: |
+      echo $(az vm list-ip-addresses \-n testnode1 \--query [0].virtualMachine.network.publicIpAddresses[0].ipAddress -o tsv) > /root/accesskeys/publicipnode1.txt
+      echo $(az vm show -g myResourceGroup -n testnode1 -d --query privateIps -otsv) >> /root/accesskeys/privateipnode2.txt
+      var1=$(cat /root/accesskeys/publicipnode1.txt)
+      sudo sed -i 's/.*[node2].*/[node2] \n '$var1'     ansible_connection=ssh        ansible_user=pawan/' /etc/ansible/hosts
+      var2=$(cat /root/accesskeys/privateipnode2.txt)
+  - name: sleep for 30 seconds and continue with play
+    wait_for: timeout=30
+  - meta: refresh_inventory
+- name: Install Tomcat
+  include: tomcat.yml

@@ -1,0 +1,14 @@
+---
+  - hosts: search1
+    become: true
+    tasks:
+      - copy:
+          src: /home/scripts/search/search1.sh
+          dest: /home/search1.sh
+
+      - name: setting permission
+        file: dest=/home/search1.sh mode=a+x
+
+      - name: executing the script on remote machine
+        shell: sh /home/search1.sh
+        ignore_errors: yes
