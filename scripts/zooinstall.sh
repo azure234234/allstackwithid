@@ -1,5 +1,12 @@
 #!/bin/bash
 
+ip1=$1  
+ip2=$2 
+ip3=$3
+id1=$4
+id2=$5
+id3=$6 
+
 sudo yum -y update
 
 cd /home
@@ -58,9 +65,9 @@ clientPort=2181
 
 ##Enter the Server Details Below##
 
-server.1=$1:2888:3888
-server.2=$2:2888:3888
-server.3=$3:2888:3888
+server.1=$id1:2888:3888
+server.2=$id2:2888:3888
+server.3=$id3:2888:3888
 
 EOL
 EOF

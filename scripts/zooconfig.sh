@@ -32,3 +32,7 @@ EOF
 
 fi
 
+sudo systemctl start zookeeper.service
+sudo systemctl stop zookeeper.service
+sudo systemctl reload zookeeper.service
+sudo systemctl start  zookeeper.service

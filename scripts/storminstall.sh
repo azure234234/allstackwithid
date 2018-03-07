@@ -1,16 +1,18 @@
 #!/bin/bash
 
-ip1=$1  #{1:?Please enter the ipaddress1}
-ip2=$2  #{2:?Please enter the ipaddress2}
-ip3=$3  #{3:?Please enter the ipaddress3}
-
+ip1=$1
+ip2=$2 
+ip3=$3 
+id1=$4
+id2=$5
+id3=$6
 
 
 ##IP of zookeeper##
-sudo sed -i 's/# storm.zookeeper.servers:.*/storm.zookeeper.servers:\n       - "'$1'"\n       - "'$2'"\n       - "'$3'"/' /home/storm/apache-storm-1.0.2/conf/storm.yaml
+sudo sed -i 's/# storm.zookeeper.servers:.*/storm.zookeeper.servers:\n       - "'$id1'"\n       - "'$id2'"\n       - "'$id3'"/' /home/storm/apache-storm-1.0.2/conf/storm.yaml
 
 ##IP of Nimbus##
-sudo sed -i 's/# nimbus.seeds:.*/nimbus.seeds: ["'$1'"]/' /home/storm/apache-storm-1.0.2/conf/storm.yaml
+sudo sed -i 's/# nimbus.seeds:.*/nimbus.seeds: ["'$id1'"]/' /home/storm/apache-storm-1.0.2/conf/storm.yaml
  
 # Create new nimbus.service
 

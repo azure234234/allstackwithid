@@ -32,23 +32,23 @@ sudo chown -R kafka. /var/kafka-logs
 
 #Privide the ip of all the nodes in the cluster
 #zookeeper.connect=ehatlin1kafka01.innovate.lan:2181,ehatlin1kafka02.innovate.lan:2181,ehatlin1kafka03.innovate.lan:2181
-sudo sed -i 's/zookeeper.connect=.*/zookeeper.connect='$4':2181,'$5':2181,'$6':2181/' /opt/kafka/config/server.properties
+sudo sed -i 's/zookeeper.connect=.*/zookeeper.connect='$id1':2181,'$id2':2181,'$id3':2181/' /opt/kafka/config/server.properties
 
 ##make sure to keep the broker id different for all the kafka nodes in the cluster.
 if [ $(hostname -I) = $ip1 ]; then
-
+sudo sed -i 's/#advertised.listeners=PLAINTEXT.*/host.name=0.0.0.0\nadvertised.host.name='$id1'/' /opt/kafka/config/server.properties
 sudo sed -i 's/broker.id=0*/broker.id=1/' /opt/kafka/config/server.properties
 
 fi
 
 if [ $(hostname -I) = $ip2 ]; then
-
+sudo sed -i 's/#advertised.listeners=PLAINTEXT.*/host.name=0.0.0.0\nadvertised.host.name='$id2'/' /opt/kafka/config/server.properties
 sudo sed -i 's/broker.id=0*/broker.id=2/' /opt/kafka/config/server.properties
 
 fi
 
 if [ $(hostname -I) = $ip3 ]; then
-
+sudo sed -i 's/#advertised.listeners=PLAINTEXT.*/host.name=0.0.0.0\nadvertised.host.name='$id3'/' /opt/kafka/config/server.properties
 sudo sed -i 's/broker.id=0*/broker.id=3/' /opt/kafka/config/server.properties
 
 fi

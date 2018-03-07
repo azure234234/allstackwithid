@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: kafka
   roles:
     - zooinstall
     - zooconfig

@@ -18,5 +18,5 @@
      file: dest=/home/zooinstall.sh mode=a+x
 
    - name: executing the script on remote machine
-     shell: sh /home/zooinstall.sh {{ ip1 }} {{ ip2 }} {{ ip3 }}
+     shell: sh /home/zooinstall.sh {{ ip1 }} {{ ip2 }} {{ ip3 }} {{ id1 }} {{ id2 }} {{ id3 }}
      ignore_errors: yes

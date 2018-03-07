@@ -4,6 +4,9 @@
 ip1=$1  
 ip2=$2 
 ip3=$3 
+id1=$4
+id2=$5
+id3=$6
 
 sudo yum -y update
 sudo yum -y install firewalld
@@ -17,9 +20,9 @@ sudo rpm --install elasticsearch-5.2.1.rpm
 if [ $(hostname -I) = $ip1 ]; then
 ###
 sudo sed -i 's/#cluster.name:.*/cluster.name: eviCoreServices/' /etc/elasticsearch/elasticsearch.yml
-sudo sed -i 's/#node.name:.*/node.name: node1/' /etc/elasticsearch/elasticsearch.yml
-sudo sed -i 's/#network.host:.*/network.host: 0.0.0.0/' /etc/elasticsearch/elasticsearch.yml 
-sudo sed -i 's/#discovery.zen.ping.unicast.hosts:.*/discovery.zen.ping.unicast.hosts: ["'$2'", "'$3'"] /' /etc/elasticsearch/elasticsearch.yml
+sudo sed -i 's/#node.name:.*/node.name: node-1/' /etc/elasticsearch/elasticsearch.yml
+sudo sed -i 's/#network.host:.*/network.host: "'$id1'"/' /etc/elasticsearch/elasticsearch.yml 
+sudo sed -i 's/#discovery.zen.ping.unicast.hosts:.*/discovery.zen.ping.unicast.hosts: ["'$id1'", "'$id2'", "'$id3'"] /' /etc/elasticsearch/elasticsearch.yml
 sudo sed -i 's/#discovery.zen.minimum_master_nodes:.*/discovery.zen.minimum_master_nodes: 2/' /etc/elasticsearch/elasticsearch.yml
 ###
 sudo systemctl daemon-reload
@@ -44,8 +47,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable kibana.service
 
 ##
-sudo sed -i 's/#server.host:.*/server.host: '$1'/' /etc/kibana/kibana.yml
-sudo sed -i 's/#elasticsearch.url:.*/elasticsearch.url: "'$1'"/' /etc/kibana/kibana.yml
+sudo sed -i 's/#server.host:.*/server.host: "'$id1'"/' /etc/kibana/kibana.yml
+sudo sed -i 's/#elasticsearch.url:.*/elasticsearch.url: "http://'$id1':9200"/' /etc/kibana/kibana.yml
 ##
 
 sudo systemctl start firewalld
@@ -61,9 +64,9 @@ if [ $(hostname -I) = $ip2 ]; then
 
 ###
 sudo sed -i 's/#cluster.name:.*/cluster.name: eviCoreServices/' /etc/elasticsearch/elasticsearch.yml
-sudo sed -i 's/#node.name:.*/node.name: node2/' /etc/elasticsearch/elasticsearch.yml
-sudo sed -i 's/#network.host:.*/network.host: 0.0.0.0/' /etc/elasticsearch/elasticsearch.yml 
-sudo sed -i 's/#discovery.zen.ping.unicast.hosts:.*/discovery.zen.ping.unicast.hosts: ["'$1'", "'$3'"] /' /etc/elasticsearch/elasticsearch.yml
+sudo sed -i 's/#node.name:.*/node.name: node-2/' /etc/elasticsearch/elasticsearch.yml
+sudo sed -i 's/#network.host:.*/network.host: "'$id2'"/' /etc/elasticsearch/elasticsearch.yml 
+sudo sed -i 's/#discovery.zen.ping.unicast.hosts:.*/discovery.zen.ping.unicast.hosts: ["'$id1'", "'$id2'", "'$id3'"] /' /etc/elasticsearch/elasticsearch.yml
 sudo sed -i 's/#discovery.zen.minimum_master_nodes:.*/discovery.zen.minimum_master_nodes: 2/' /etc/elasticsearch/elasticsearch.yml
 ###
 
@@ -84,9 +87,9 @@ if [ $(hostname -I) = $ip3 ]; then
 
 ###
 sudo sed -i 's/#cluster.name:.*/cluster.name: eviCoreServices/' /etc/elasticsearch/elasticsearch.yml
-sudo sed -i 's/#node.name:.*/node.name: node3/' /etc/elasticsearch/elasticsearch.yml
-sudo sed -i 's/#network.host:.*/network.host: 0.0.0.0/' /etc/elasticsearch/elasticsearch.yml 
-sudo sed -i 's/#discovery.zen.ping.unicast.hosts:.*/discovery.zen.ping.unicast.hosts: ["'$1'", "'$2'"] /' /etc/elasticsearch/elasticsearch.yml
+sudo sed -i 's/#node.name:.*/node.name: node-3/' /etc/elasticsearch/elasticsearch.yml
+sudo sed -i 's/#network.host:.*/network.host: "'$id3'"/' /etc/elasticsearch/elasticsearch.yml 
+sudo sed -i 's/#discovery.zen.ping.unicast.hosts:.*/discovery.zen.ping.unicast.hosts: ["'$id1'", "'$id2'", "'$id3'"] /' /etc/elasticsearch/elasticsearch.yml
 sudo sed -i 's/#discovery.zen.minimum_master_nodes:.*/discovery.zen.minimum_master_nodes: 2/' /etc/elasticsearch/elasticsearch.yml
 ###
 

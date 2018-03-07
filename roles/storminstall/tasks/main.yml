@@ -44,6 +44,6 @@
      file: dest=/home/storminstall.sh mode=a+x
       
    - name: executing the script on remote machine
-     shell: sh /home/storminstall.sh {{ ip1 }} {{ ip2 }} {{ ip3 }}
+     shell: sh /home/storminstall.sh {{ ip1 }} {{ ip2 }} {{ ip3 }} {{ id1 }} {{ id2 }} {{ id3 }}
      ignore_errors: yes
      
